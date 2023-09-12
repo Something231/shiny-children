@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% block title %}Chat{% endblock %}
+{% block content %}
+<script>
+  function updateChat() {
+      var xhr = new XMLHttpRequest();
+
+      xhr.onreadystatechange = function() {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+          // if the request is successful, update the chat div
+          document.getElementById("rolbox").innerHTML = ""
+          var hist = JSON.parse(xhr.responseText);
+          for (var i = 0; i < Object.keys(hist).length; i++) {
+              var div = document.createElement("div");
+              div.setAttribute("id", "srolbox");
+              var img = document.createElement("img");
+              img.setAttribute("src", "/static/images/" + hist[i]["profile"]);
+              img.setAttribute("width", "35px");
+              img.setAttribute("height", "35px");
+              img.setAttribute("style", "border-radius: 50%; float: left;");
+              var p1 = document.createElement("p");
+              p1.setAttribute("style", "font-weight: bold; margin-bottom: 0.3rem");
+              var p1text = document.createTextNode("\xa0" + hist[i]["author"] + " ");
+              p1.appendChild(p1text);
+              var small = document.createElement("small");
+              var smalltext = document.createTextNode(hist[i]["time"]);
+              small.appendChild(smalltext);
+              p1.appendChild(small);
+              var p2 = document.createElement("p");
+              p2.setAttribute("style", "margin-bottom: 0.3rem");
+              var p2text = document.createTextNode("\xa0" + hist[i]["message"]);
+              p2.appendChild(p2text);
+              div.appendChild(img);
+              div.appendChild(p1);
+              div.appendChild(p2);
+              document.getElementById("rolbox").appendChild(div);
+          }
+        }
+      }
+      xhr.open('GET', '/chat/refresh', true);
+      xhr.send();
+  }
+
+  // Initial load and update every second
+  window.onload = function() {
+      window.scrollTo(0, document.body.scrollHeight);
+      document.getElementById('txtbar').focus();
+      setInterval(updateChat, 1000); // Update every second
+  }
+</script>
+
+<div id="rolbox">
+<h5>Welcome to chat</h5>
+<h5>Your username is: {{user}}</h5>
+{% for m in hist %}
+  <div id="srolbox">
+  <img src="/static/images/{{ hist[m]['profile'] }}" width="35px" height="35px" style="border-radius: 50%; float: left;"> 
+  <p style="font-weight: bold; margin-bottom: 0.3rem">&nbsp;{{ hist[m]["author"] }} <small><small><small>{{ hist[m]["time"] }}</small></small></small></p>
+  <p style="margin-bottom: 0.3rem">&nbsp;{{ hist[m]["message"] }}</p>
+  </div>
+{% endfor %}
+&nbsp;
+</div>
+<form action="#" method="post" style="width: 60%; left: 20%; position: absolute;">
+  <div class="input-group mb-3">
+  <input type="text" id="txtbar" class="form-control" placeholder="Enter your message here" aria-label="Enter your message here" name="mxg" aria-describedby="button-addon2">
+  <button class="btn btn-outline-secondary" type="submit" id="chatSubmit" id="button-addon2">Send</button>
+</div>
+</form>
+{% endblock %}
