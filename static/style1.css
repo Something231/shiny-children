@@ -1,0 +1,16 @@
+#rolbox {
+    /* border: 1px solid; */
+    border-radius: 5px;
+    /* box-shadow: 0 0 5px #dcdcdc; */
+    margin: auto;
+    padding: 20px 20px 20px;
+    width: 1000px;
+}
+
+#srolbox {
+    /* MAKE A BOX AROUND IT */ 
+    /* border: 1px solid; */
+    border-radius: 5px;
+    /* box-shadow: 0 0 5px #dcdcdc; */
+    padding: 5px 20px 5px;
+}
