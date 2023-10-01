@@ -1,57 +1,150 @@
 {% extends "base.html" %}
 {% block title %}Chat{% endblock %}
 {% block content %}
-<script>
-  function updateChat() {
-      var xhr = new XMLHttpRequest();
+<script type="text/javascript">
+  var typing = false;
+  var typingTimeout;
+  var socket = io.connect("https://e-fork.something231.repl.co/")
 
-      xhr.onreadystatechange = function() {
-        if (xhr.readyState == 4 && xhr.status == 200) {
-          // if the request is successful, update the chat div
-          document.getElementById("rolbox").innerHTML = ""
-          var hist = JSON.parse(xhr.responseText);
-          for (var i = 0; i < Object.keys(hist).length; i++) {
-              var div = document.createElement("div");
-              div.setAttribute("id", "srolbox");
-              var img = document.createElement("img");
-              img.setAttribute("src", "/static/images/" + hist[i]["profile"]);
-              img.setAttribute("width", "35px");
-              img.setAttribute("height", "35px");
-              img.setAttribute("style", "border-radius: 50%; float: left;");
-              var p1 = document.createElement("p");
-              p1.setAttribute("style", "font-weight: bold; margin-bottom: 0.3rem");
-              var p1text = document.createTextNode("\xa0" + hist[i]["author"] + " ");
-              p1.appendChild(p1text);
-              var small = document.createElement("small");
-              var smalltext = document.createTextNode(hist[i]["time"]);
-              small.appendChild(smalltext);
-              p1.appendChild(small);
-              var p2 = document.createElement("p");
-              p2.setAttribute("style", "margin-bottom: 0.3rem");
-              var p2text = document.createTextNode("\xa0" + hist[i]["message"]);
-              p2.appendChild(p2text);
-              div.appendChild(img);
-              div.appendChild(p1);
-              div.appendChild(p2);
-              document.getElementById("rolbox").appendChild(div);
+  function notifyMe(msg) {
+      if (!("Notification" in window)) {
+        // Check if the browser supports notifications
+        alert("This browser does not support desktop notification");
+      } else if (Notification.permission === "granted") {
+        // Check whether notification permissions have already been granted;
+        // if so, create a notification
+        const notification = new Notification(msg);
+        // …
+      } else if (Notification.permission !== "denied") {
+        // We need to ask the user for permission
+        Notification.requestPermission().then((permission) => {
+          // If the user accepts, let's create a notification
+          if (permission === "granted") {
+            const notification = new Notification(msg);
+            // …
           }
-        }
+        });
       }
-      xhr.open('GET', '/chat/refresh', true);
-      xhr.send();
+    
+      // At last, if the user has denied notifications, and you
+      // want to be respectful there is no need to bother them anymore.
+    }
+    
+  function sendMessage() {
+    var message = document.getElementById('txtbar').value;
+
+    // Check if the message is not empty
+    if (message.trim() !== '') {
+            // Send the message to the server via WebSocket
+      socket.send('message', message);
+
+            // Clear the input field
+      document.getElementById('txtbar').value = '';
+    }
   }
 
-  // Initial load and update every second
-  window.onload = function() {
-      window.scrollTo(0, document.body.scrollHeight);
-      document.getElementById('txtbar').focus();
-      setInterval(updateChat, 1000); // Update every second
-  }
+  socket.on('message', function(data) {
+        if (document.getElementById("usernameHead").innerHTML != data.author) {
+            console.log(document.getElementById("usernameHead").innerHTML + " " +  data.author)
+            notifyMe("(" + data.author + ') sent "' + data.message + '"');
+        }
+      
+        // Handle incoming messages from the server
+        console.log('Received message from server:', data);
+
+        // Create a new div element for the message
+        var messageDiv = document.createElement('div');
+        messageDiv.id = "srolbox";
+        messageDiv.innerHTML = `
+            <img src="/static/images/${data.profile}" width="35px" height="35px" style="border-radius: 50%; float: left;">
+            <p style="font-weight: bold; margin-bottom: 0.3rem">&nbsp;${data.author} <small><small><small>${data.time}</small></small></small></p>
+            <p style="margin-bottom: 0.3rem">&nbsp;${data.message}</p>
+        `;
+
+        // Append the new message div to the #messages element
+        var messagesContainer = document.getElementById('messages');
+        messagesContainer.appendChild(messageDiv);
+        focusAndScroll();
+  });
+  
 </script>
+<script>
+    function addContents() {
+        var xhr = new XMLHttpRequest();
 
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState == 4 && xhr.status == 200) {
+                var allUsers = JSON.parse(xhr.responseText);
+                var users = allUsers.online;
+                var offUsers = allUsers["offline"];
+    
+                var usersdiv = document.getElementById("usersdiv");
+                var offusersdiv = document.getElementById("offusersdiv");
+                usersdiv.innerHTML = "";
+                offusersdiv.innerHTML = "";
+                    
+                for (var i = 0; i < Object.keys(users).length; i++) {
+                    var div = document.createElement("div");
+                    div.setAttribute("id", "srolbox");
+                    var img = document.createElement("img");
+                    img.setAttribute("src", "/static/images/" + users[i]["profile"]);
+                    img.setAttribute("width", "35px");
+                    img.setAttribute("height", "35px");
+                    img.setAttribute("style", "border-radius: 50%; float: left;");
+                    var p1 = document.createElement("p");
+                    p1.setAttribute("style", "font-weight: bold; margin-bottom: 0.3rem");
+                    var p1text = document.createTextNode("\xa0" + users[i]["author"] + " ");
+                    p1.appendChild(p1text);
+                    div.appendChild(img);
+                    div.appendChild(p1);
+                    usersdiv.appendChild(div);
+                }
+
+                offUsersLoop:
+                for (var i = 0; i < Object.keys(offUsers).length; i++) {
+                    for (var j = 0; j < Object.keys(users).length; j++) {
+                        if (offUsers[i]["author"] == users[j]["author"]) {
+                            continue offUsersLoop;
+                        }
+                    }
+                    var div = document.createElement("div");
+                    div.setAttribute("id", "srolbox");
+                    var img = document.createElement("img");
+                    img.setAttribute("src", "/static/images/" + offUsers[i]["profile"]);
+                    img.setAttribute("width", "35px");
+                    img.setAttribute("height", "35px");
+                    img.setAttribute("style", "border-radius: 50%; float: left; opacity: 0.4;");
+                    var p1 = document.createElement("p");
+                    p1.setAttribute("style", "font-weight: bold; margin-bottom: 0.3rem; opacity: 0.4;");
+                    var p1text = document.createTextNode("\xa0" + offUsers[i]["author"] + " ");
+                    p1.appendChild(p1text);
+                    div.appendChild(img);
+                    div.appendChild(p1);
+                    offusersdiv.appendChild(div);
+                }
+            }
+        }
+        xhr.open('GET', '/chat/userrefresh', true);
+        xhr.send();
+    }
+    function focusAndScroll() {
+            // Get the input element by ID
+      var txtbar = document.getElementById('txtbar');
+            
+            // Set focus on the input element
+      txtbar.focus();
+            
+            // Scroll to the input element -- -- Drugs and children
+      txtbar.scrollIntoView({ behavior: "smooth" });
+    }
+    window.onload = function() {
+      focusAndScroll();
+    }// Im back (to sell drugs)
+</script>
 <div id="rolbox">
 <h5>Welcome to chat</h5>
-<h5>Your username is: {{user}}</h5>
+<h5>Your username is: <span id="usernameHead">{{user}}</span></h5>
+<div id="messages">
 {% for m in hist %}
   <div id="srolbox">
   <img src="/static/images/{{ hist[m]['profile'] }}" width="35px" height="35px" style="border-radius: 50%; float: left;"> 
@@ -59,12 +152,29 @@
   <p style="margin-bottom: 0.3rem">&nbsp;{{ hist[m]["message"] }}</p>
   </div>
 {% endfor %}
-&nbsp;
 </div>
-<form action="#" method="post" style="width: 60%; left: 20%; position: absolute;">
+</div>
+<form action="javascript:sendMessage()" style="width: 60%; left: 20%; position: absolute;" id="msgform">
   <div class="input-group mb-3">
   <input type="text" id="txtbar" class="form-control" placeholder="Enter your message here" aria-label="Enter your message here" name="mxg" aria-describedby="button-addon2">
-  <button class="btn btn-outline-secondary" type="submit" id="chatSubmit" id="button-addon2">Send</button>
+  <button class="btn btn-outline-secondary" type="button" id="chatSubmit" onclick="sendMessage()" id="button-addon2">Send</button>
 </div>
 </form>
+<button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasWithBothOptions" aria-controls="offcanvasWithBothOptions"
+style="width: 65px; left: 4%; position: absolute; min-width: 65px; background-color: rgb(55, 55, 75);" onclick="addContents()">Users</button>
+
+<button class="btn btn-primary" type="button" onclick="loadAllFunc()"
+style="width: 65px; right: 4%; position: absolute; min-width: 65px; background-color: rgb(55, 55, 75); opacity: 50%" onclick="addContents()">More</button>
+
+<div class="offcanvas offcanvas-start" data-bs-scroll="true" tabindex="-1" id="offcanvasWithBothOptions" aria-labelledby="offcanvasWithBothOptionsLabel">
+  <div class="offcanvas-header">
+    <h5 class="offcanvas-title" id="offcanvasWithBothOptionsLabel">Online Users</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+  </div>
+  <div class="offcanvas-body" id="usersdiv">
+  </div>
+    <h5 class="offcanvas-title" id="offcanvasWithBothOptionsLabel">&nbsp;&nbsp;&nbsp;Offline Users</h5>
+    <div class="offcanvas-body" id="offusersdiv">
+    </div>
+</div>
 {% endblock %}
