@@ -4,7 +4,7 @@
     /* box-shadow: 0 0 5px #dcdcdc; */
     margin: auto;
     padding: 20px 20px 20px;
-    width: 1000px;
+    width: 90%;
 }
 
 #srolbox {
@@ -14,3 +14,105 @@
     /* box-shadow: 0 0 5px #dcdcdc; */
     padding: 5px 20px 5px;
 }
+
+[data-bs-theme=purple] {
+  --bs-body-color: #CBA2C9;
+  --bs-body-color-rgb: to-rgb(#CBA2C9);
+  --bs-body-bg: #592693;
+  --bs-body-bg-rgb: to-rgb(#800080);
+  --bs-tertiary-bg: #311465;
+  #nave {
+      background-color: aqua !important;
+  }
+}
+[data-bs-theme=purple] .dropdown-menu {
+  --bs-dropdown-bg: #451d7c;
+  --bs-dropdown-link-active-bg: #CBA2C9;
+}
+[data-bs-theme=purple] .btn-secondary {
+  --bs-btn-bg: #af69ec;
+  --bs-btn-border-color: rgba(203, 162, 201, 0.25);
+  --bs-btn-hover-bg: #a352e9;
+  --bs-btn-hover-border-color: rgba(203, 162, 201, 0.25);
+  --bs-btn-active-bg: #973ce6;
+  --bs-btn-active-border-color: rgba(203, 162, 201, 0.5);
+  --bs-btn-focus-border-color: rgba(203, 162, 201, 0.5);
+  --bs-btn-focus-box-shadow: 0 0 0 .25rem rgba(255, 255, 255, .2);
+}
+
+[data-bs-theme=dark-purple] {
+  --bs-body-color: #CBA2C9;
+  --bs-body-color-rgb: to-rgb(#CBA2C9);
+  --bs-body-bg: #6400d1;
+  --bs-body-bg-rgb: to-rgb(#6400d1);
+  --bs-tertiary-bg: #311465;
+  #nave {
+      background-color: aqua !important;
+  }
+}
+[data-bs-theme=dark-purple] .dropdown-menu {
+  --bs-dropdown-bg: #451d7c;
+  --bs-dropdown-link-active-bg: #CBA2C9;
+}
+[data-bs-theme=dark-purple] .btn-secondary {
+  --bs-btn-bg: #af69ec;
+  --bs-btn-border-color: rgba(203, 162, 201, 0.25);
+  --bs-btn-hover-bg: #a352e9;
+  --bs-btn-hover-border-color: rgba(203, 162, 201, 0.25);
+  --bs-btn-active-bg: #973ce6;
+  --bs-btn-active-border-color: rgba(203, 162, 201, 0.5);
+  --bs-btn-focus-border-color: rgba(203, 162, 201, 0.5);
+  --bs-btn-focus-box-shadow: 0 0 0 .25rem rgb(221, 174, 243);
+}
+
+[data-bs-theme=hot-pink] {
+  --bs-body-color: #FFFFFF; /* White text color */
+  --bs-body-bg: #FF69B4; /* Hot pink background color */
+  --bs-tertiary-bg: #FF1493; /* A darker shade of pink for specific elements */
+}
+
+[data-bs-theme=hot-pink] .dropdown-menu {
+  --bs-dropdown-bg: #FF6BBD; /* Light pink background for dropdown menus */
+  --bs-dropdown-link-active-bg: #FF1493; /* Active link background color */
+}
+
+[data-bs-theme=hot-pink] .btn-secondary {
+  --bs-btn-bg: #FF69B4; /* Hot pink button background color */
+  --bs-btn-border-color: rgba(255, 105, 180, 0.25); /* Light pink border color */
+  --bs-btn-hover-bg: #FF1493; /* Hovered button background color */
+  --bs-btn-hover-border-color: rgba(255, 105, 180, 0.25); /* Hovered button border color */
+  --bs-btn-active-bg: #FF007F; /* Darker pink for active buttons */
+  --bs-btn-active-border-color: rgba(255, 0, 127, 0.5); /* Active button border color */
+  --bs-btn-focus-border-color: rgba(255, 0, 127, 0.5); /* Focused button border color */
+  --bs-btn-focus-box-shadow: 0 0 0 .25rem rgba(255, 0, 127, 0.5); /* Focused button box-shadow */
+}
+
+[data-bs-theme=teal] {
+  --bs-body-color: #FFFFFF; /* White text color */
+  --bs-body-bg: #008080; /* Teal background color */
+  --bs-tertiary-bg: #006666; /* A darker shade of teal for specific elements */
+}
+
+[data-bs-theme=teal] .dropdown-menu {
+  --bs-dropdown-bg: #00cccc; /* Light teal background for dropdown menus */
+  --bs-dropdown-link-active-bg: #006666; /* Active link background color */
+}
+
+[data-bs-theme=teal] .btn-secondary {
+  --bs-btn-bg: #008080; /* Teal button background color */
+  --bs-btn-border-color: rgba(0, 128, 128, 0.25); /* Light teal border color */
+  --bs-btn-hover-bg: #006666; /* Hovered button background color */
+  --bs-btn-hover-border-color: rgba(0, 128, 128, 0.25); /* Hovered button border color */
+  --bs-btn-active-bg: #004d4d; /* Darker teal for active buttons */
+  --bs-btn-active-border-color: rgba(0, 128, 128, 0.5); /* Active button border color */
+  --bs-btn-focus-border-color: rgba(0, 128, 128, 0.5); /* Focused button border color */
+  --bs-btn-focus-box-shadow: 0 0 0 .25rem rgba(0, 128, 128, 0.5); /* Focused button box-shadow */
+}
+
+/*# sourceMappingURL=custom.css.map */
+
+
+/*# sourceMappingURL=custom.css.map */
+
+
+
