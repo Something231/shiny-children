@@ -1,0 +1,18 @@
+{
+  "short_name": "Mindoor",
+  "name": "E: Mindoorian Hub",
+  "icons": [
+    {
+      "src": "/static/images/icon192.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "/static/images/icon512.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ],
+  "start_url": "/",
+  "display": "standalone"
+}
