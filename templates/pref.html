@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}Prefrences{% endblock %}
+{% block content %}
+<h4>My Prefrences</h4>
+{% if children == "one" %}
+&nbsp
+<h5>Profile Picture</h5>
+<form>
+  <button type="submit" class="btn btn-outline-warning" formaction="/prefrences/avatar">Edit my avatar</button>
+</form>
+&nbsp
+<h5>Colour Themes</h5>
+<button id="theme-switcher" data-bs-theme-value="light" class="btn btn-outline-info">Light Theme</button>
+<button id="theme-switcher" data-bs-theme-value="dark" class="btn btn-outline-info">Dark Theme</button>
+<button id="theme-switcher" data-bs-theme-value="purple" class="btn btn-outline-info">Purple Theme</button>
+<button id="theme-switcher" data-bs-theme-value="dark-purple" class="btn btn-outline-info">Dark Purple Theme</button>
+<button id="theme-switcher" data-bs-theme-value="hot-pink" class="btn btn-outline-info">Gay Theme</button>
+<button id="theme-switcher" data-bs-theme-value="teal" class="btn btn-outline-info">Teal</button>
+{% elif children == "two": %}
+<form action="#" method="post" enctype="multipart/form-data">
+  <h2>Please a new profile picture: </h2>
+  <p><input id="file" type="file" required=true name="profile_image" accept="image/x-png,image/gif,image/jpeg" /></p>
+  <p><input type="submit" name="submit" value="register" /></p> 
+</form>
+{% elif children == "three" %}
+{% endif %}
+{% endblock %}
